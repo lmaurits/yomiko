@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+
+<title>$blog_title</title>	
+
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+<link rel="alternate" type="application/atom+xml" title="Atom 1.0" href="$atom_link" />
+<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="$rss2_link" />
+<link rel="alternate" type="application/rss+xml" title="RSS 0.9" href="$rss_link" />
+
+</head>
+
+<body>
+	<h1><a href="$home_link">$blog_title</a></h1>
+	
+	<div style="float:left;">
+	<b>Archives</b>
+        <ul>
+#for $text, $link in $archive_links
+		<li><a href="$link">$text</a></li>
+#end for
+        </ul>
+
+	<b>Tag Cloud</b>
+	<ul>
+#for $tag, $tag_link, $count in $tags:
+	             <li><a href="$tag_link">$tag ($count)</a></li>
+#end for
+        </ul>
+        </div>
+	<div style="margin-left: 275px;">
+		$cherryblosxom_content
+	</div>
+</body>
+
+</html>

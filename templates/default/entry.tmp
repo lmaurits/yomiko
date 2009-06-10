@@ -1,0 +1,59 @@
+<h2>$title</h2>
+<h3>Posted at: $timestamp</h3>
+<p><b>Tagged as: </b>
+#for $tag, $link in $tags
+<a href="$link">$tag</a>,
+#end for</p>
+
+$entry
+
+<h2>Comments</h2>
+
+#for $comment in $comments
+
+<div class="blosxomComment">
+<h3>Posted by $comment["name"] at $comment["timestamp"]</h3>
+
+<p>
+$comment["comment"]
+</p>
+</div>
+
+#end for
+
+<h2>Leave a comment</h2>
+
+<p id="comment-anchor">
+  <b>Leave your comment with this form</b>
+  </p>
+
+  <div class="blosxomCommentForm">
+  <form method="post" action="$comment_link" accept-charset="UTF-8"
+  name="comments_form" id="comments_form" >
+  <div>
+  <input name="title" type="hidden" value="$url_title" />
+  Name:<br />
+  <input maxlength="50" name="name" id="comment-author" size="50" type="text"
+   value="$comment_name" /><br />
+   <br />
+   E-mail:<br />
+   <input maxlength="75" name="email" id="comment-email" size="50" type="text"
+	value="$comment_email" /><br />
+	<br />
+	URL:<br />
+	<input maxlength="100" name="url" id="comment-url" size="50" type="text"
+	 value="$comment_url" /><br />
+	 <br />
+	 Comment:<br />
+	 <textarea cols="50" name="body" id="comment-body"
+	 rows="12">$comment_body</textarea><br />
+	 <br />
+	 Anti-spam question (provide a one word answer in lowercase letters with no
+	 punctuation, to prove you are not a robot): <br/>
+	 $spam_question <br/>
+	<input maxlength="100" name="spam_answer" id="comment-url" size="50" type="text"
+	 value="" /><br />
+	  <input value="Preview" name="preview" type="submit" id="preview" />
+	  <input value="Submit" name="submit" type="submit" id="post" />
+	  </div>
+	  </form>
