@@ -3,7 +3,11 @@
 import cherrypy
 from flup.server.fcgi import WSGIServer
 
-from yomiko.core import Yomiko
+from yomiko.core import Yomiko, Entry
+from yomiko.archives import Archives
+from yomiko.tags import Tags
+from yomiko.comments import Comments
+from yomiko.feeds import Feeds
 
 def main():
 
@@ -21,7 +25,8 @@ def main():
     app = cherrypy.tree.mount(root, script_name=root.config["base_uri"], config="cherrypy.conf")
     cherrypy.config.update({'error_page.404': error404})
 
-    cherrypy.engine.start(blocking=False)
+#    cherrypy.engine.start(blocking=False)
+    cherrypy.engine.start()
     try:
         WSGIServer(app).run()
     finally:

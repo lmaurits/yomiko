@@ -2,6 +2,8 @@
 
 from os.path import exists
 
+from yomiko.core import YomikoComponent
+
 class Tags(YomikoComponent):
 
     def default(self, tag, page=1):

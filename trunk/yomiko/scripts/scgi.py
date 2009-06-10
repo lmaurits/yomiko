@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import cherrypy
-from flup.server.cgi import WSGIServer
+from flup.server.scgi import WSGIServer
 
 from yomiko.core import Yomiko, Entry
 from yomiko.archives import Archives

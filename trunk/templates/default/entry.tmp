@@ -11,7 +11,7 @@ $entry
 
 #for $comment in $comments
 
-<div class="blosxomComment">
+<div class="yomikoComment">
 <h3>Posted by $comment["name"] at $comment["timestamp"]</h3>
 
 <p>
@@ -27,7 +27,7 @@ $comment["comment"]
   <b>Leave your comment with this form</b>
   </p>
 
-  <div class="blosxomCommentForm">
+  <div class="yomikoCommentForm">
   <form method="post" action="$comment_link" accept-charset="UTF-8"
   name="comments_form" id="comments_form" >
   <div>

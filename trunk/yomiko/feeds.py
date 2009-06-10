@@ -24,8 +24,8 @@ class Feeds(YomikoComponent):
         channel["webmaster"] = self.config["author_name"]
 
         items = []
-                files = self.get_entry_filenames(self.config["entries_dir"], 1)
-                entries = [self.make_entry_from_file(self.config["entries_dir"]+"/"+file) for file in files]
+        files = self.get_entry_filenames(self.config["entries_dir"], 1)
+        entries = [self.make_entry_from_file(self.config["entries_dir"]+"/"+file) for file in files]
         for entry in entries:
             item = {}
             item["title"] = entry["title"]

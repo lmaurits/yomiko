@@ -13,7 +13,7 @@
 #for $tag, $link in $entry["tags"]
 <a href="$link">$tag</a>,
 #end for</p>
-<div class="blosxomStory">
+<div class="yomikoStory">
 
 $entry["entry"]
 
