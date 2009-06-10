@@ -15,19 +15,15 @@ def main():
     root.feeds = Feeds(root = root)
 
     def error404(status, message, traceback, version):
-    	values = {}
-    	return root.render("error404", values)
+        values = {}
+        return root.render("error404", values)
 
     app = cherrypy.tree.mount(root, script_name=root.config["base_uri"], config="cherrypy.conf")
     cherrypy.config.update({'error_page.404': error404})
 
     cherrypy.engine.start(blocking=False)
     try:
-    	WSGIServer(app).run()
+        WSGIServer(app).run()
     finally:
-    	# This ensures that any left-over threads are stopped as well.
-    	cherrypy.engine.stop()
-
-if __name__ == "__main__":
-
-    main()
+        # This ensures that any left-over threads are stopped as well.
+        cherrypy.engine.stop()
