@@ -41,17 +41,17 @@ class Feeds(YomikoComponent):
     def rss1(self):
         feed = self._get_feed()
         cherrypy.response.headers['Content-Type'] = "text/xml"
-        return feed.format_rss1_nofile(validate=False, pretty=True)
+        return feed.format_rss1_string(validate=False, pretty=True)
     rss1.exposed = True
 
     def rss2(self):
         feed = self._get_feed()
         cherrypy.response.headers['Content-Type'] = "text/xml"
-        return feed.format_rss2_nofile(validate=False, pretty=True)
+        return feed.format_rss2_string(validate=False, pretty=True)
     rss2.exposed = True
 
     def atom(self):
         feed = self._get_feed()
         cherrypy.response.headers['Content-Type'] = "text/xml"
-        return feed.format_rss2_nofile(validate=False, pretty=True)
+        return feed.format_rss2_string(validate=False, pretty=True)
     atom.exposed = True
