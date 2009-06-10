@@ -18,7 +18,7 @@ try:
 except ImportError:
 	_CAN_DO_FEEDS = False
 
-class CherryBlosxomComponent:
+class YomikoComponent:
 
 	def __init__(self, config = None, root = None):
 		if root:
@@ -39,7 +39,7 @@ class CherryBlosxomComponent:
 
 	def render(self, template, values):
 		template = Template(file = "templates/%s/%s.tmp" % (self.config["template"], template), searchList = [values])
-		values["cherryblosxom_content"] = str(template)
+		values["yomiko_content"] = str(template)
 
 		values["blog_title"] = self.config["blog_title"]
 		values["home_link"] = self.config["base_uri"]
@@ -113,7 +113,7 @@ class CherryBlosxomComponent:
 			if not exists(self.config["tags_dir"]+"/"+tag+"/"+basename):
 				symlink(abspath(self.config["entries_dir"]+"/"+basename), self.config["tags_dir"]+"/"+tag+"/"+basename)
 
-class CherryBlosxom(CherryBlosxomComponent):
+class Yomiko(YomikoComponent):
 
 	def index(self, page=1):
 		page = int(page)
@@ -138,7 +138,7 @@ class CherryBlosxom(CherryBlosxomComponent):
 
 	stupid_test.exposed = True
 
-class Entry(CherryBlosxomComponent):
+class Entry(YomikoComponent):
 
 	def default(self, title):
 		url_title = title
@@ -197,7 +197,7 @@ class Entry(CherryBlosxomComponent):
 
 	default.exposed = True
 
-class Archives(CherryBlosxomComponent):
+class Archives(YomikoComponent):
 
 	def default(self, year, month, page=1):
 		files = self.get_entry_filenames(self.config["entries_dir"], page)
@@ -224,7 +224,7 @@ class Archives(CherryBlosxomComponent):
 
 	default.exposed = True
 
-class Tags(CherryBlosxomComponent):
+class Tags(YomikoComponent):
 
 	def default(self, tag, page=1):
 		if exists(self.config["tags_dir"]+"/"+tag):
@@ -239,7 +239,7 @@ class Tags(CherryBlosxomComponent):
 
 	default.exposed = True
 
-class Comments(CherryBlosxomComponent):
+class Comments(YomikoComponent):
 
 	def submit(self, title, body, spam_answer, name="Anonymous", email="", url="", submit="", preview=""):
 		if spam_answer == cherrypy.session.get('spam_answer'):
@@ -276,7 +276,7 @@ class Comments(CherryBlosxomComponent):
 		session = SMTP(self.config["smtp_host"])
 		session.sendmail(SENDER, RECIPIENTS, msg)
 
-class Feeds(CherryBlosxomComponent):
+class Feeds(YomikoComponent):
 
 	def _get_feed(self):
 		if not _CAN_DO_FEEDS:
@@ -320,7 +320,7 @@ class Feeds(CherryBlosxomComponent):
 		return feed.format_rss2_nofile(validate=False, pretty=True)
 	atom.exposed = True
 
-root = CherryBlosxom(config = "cherryblosxom.conf")
+root = Yomiko(config = "yomiko.conf")
 root.entry = Entry(root = root)
 root.archives = Archives(root = root)
 root.tags = Tags(root = root)
