@@ -108,9 +108,10 @@ class Yomiko(YomikoComponent):
     def index(self, page=1):
         page = int(page)
         files = self.get_entry_filenames(self.config["entries_dir"], page)
-        if not files:
-            raise cherrypy.HTTPError(404)
-        entries = [self.make_entry_from_file(self.config["entries_dir"]+"/"+file_) for file_ in files]
+        if files:
+            entries = [self.make_entry_from_file(self.config["entries_dir"]+"/"+file_) for file_ in files]
+        else:
+            entries = []
         values = {"page" : page, "entries" : entries}
         if page == 2:
             values["earlier_link"] = self.config["base_uri"]+"/"
@@ -127,3 +128,61 @@ class Yomiko(YomikoComponent):
         return abspath(self.config["entries_dir"]+"/prime_time.txt")
 
     stupid_test.exposed = True
+
+class Entry(YomikoComponent):
+
+    def default(self, title):
+        url_title = title
+        if exists(self.config["entries_dir"]+"/"+title+"."+self.config["entry_ext"]):
+            # Get entry and comments
+            values = self.make_entry_from_file(self.config["entries_dir"]+"/"+title+"."+self.config["entry_ext"])
+            values["comments"] = self.get_comments(url_title)
+
+            # Pick random anti-spam question
+            choices = ( ("What is the opposite of hot?", "cold"),
+                        ("What is the opposite of cold?", "hot"),
+                        ("What is the opposite of up?", "down"),
+                        ("What is the opposite of down?", "up"),
+                        ("What is the opposite of left?", "right"),
+                        ("What is the opposite of top?", "bottom"),
+                        ("What is the opposite of bottom?", "top"),
+                        ("What is the opposite of in?", "out"))
+            question, answer = sample(choices, 1)[0]
+            cherrypy.session["spam_answer"] = answer
+
+            values["spam_question"] = question
+            values["comment_link"] = self.config["base_uri"]+"/comments/submit"
+            values["spam_message"] = cherrypy.session.get("spam_message")
+            values["comment_name"] = cherrypy.session.get("comment_name")
+            values["comment_email"] = cherrypy.session.get("comment_email")
+            values["comment_url"] = cherrypy.session.get("comment_url")
+            values["comment_body"] = cherrypy.session.get("comment_body")
+
+            return self.render("entry", values)
+        else:
+            raise cherrypy.HTTPError(404)
+
+    def get_comments(self, title):
+        if exists(self.config["comments_dir"]+"/"+title):
+            comment_files = listdir(self.config["comments_dir"]+"/"+title)
+            comment_files.sort()
+            return [self.get_comment_from_file(self.config["comments_dir"]+"/"+title+"/"+comment_file) for comment_file in comment_files]
+        else:
+            return []
+
+    def get_comment_from_file(self, filename):
+        comment = {}
+        comment["timestamp"] = strftime("%c", localtime(float(filename.rsplit("/",1)[1][0:-4])/100))
+        fp = open(filename, "r")
+        while True:
+            line = fp.readline().strip()
+            if line == "-----":
+                break
+            else:
+                key, value = line.split(":",1)
+                comment[key.strip().lower()] = value.strip()
+        comment["comment"] = fp.read()
+        fp.close()
+        return comment
+
+    default.exposed = True
