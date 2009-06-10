@@ -1,4 +1,4 @@
-#!/usr/pkg/bin/python2.4
+#!/usr/bin/env python
 
 from ConfigParser import RawConfigParser
 from os import listdir, mkdir, symlink
