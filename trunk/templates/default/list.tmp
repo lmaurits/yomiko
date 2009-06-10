@@ -1,0 +1,24 @@
+#if $varExists('later_link')
+<div style="float: left"><a href="$later_link">...Later entries</a></div>
+#end if
+#if $varExists('earlier_link')
+<div style="float: right"><a href="$earlier_link">Earlier entries...</a></div>
+#end if
+<div style="clear: right">&nbsp;</div>
+
+#for $entry in $entries
+<h2>$entry["title"]</h2>
+<h3>Posted at: $entry["timestamp"]</h3>
+<p><b>Tagged as: </b>
+#for $tag, $link in $entry["tags"]
+<a href="$link">$tag</a>,
+#end for</p>
+<div class="blosxomStory">
+
+$entry["entry"]
+
+<p class="rightaligned">
+<a href="$entry["permalink"]">permanent link to this entry // $entry["comment_count"] Comments</a>
+</p>
+</div>
+#end for
